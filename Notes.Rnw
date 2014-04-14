@@ -2,6 +2,7 @@
 %\graphicspath{{./Figures/}} % Specifies the directory where pictures are stored
 %\usepackage[dcucite]{harvard}
 \usepackage{rotating}
+\usepackage{amsmath}
 \usepackage{setspace}
 \usepackage{pdflscape}
 \usepackage[flushleft]{threeparttable}
@@ -18,6 +19,13 @@
 \author{Rob Hayward}
 \date{\today}
 \maketitle
+\section{Power of tests}
+This comes from \href{http://errorstatistics.com/2014/03/12/get-empowered-to-detect-power-howlers/}{Error Statistics Philosophy}.  The statistical stignificance of a test does not mean much without some information on the power of the test. For example, if the smoke alarm is very sensitive, the alarm going off is not a strong indication of a fire; if the alarm is lacking sensitivity, the alarm is a very good signa. 
+
+$H0: \mu \leq 1, \text{against} H1: \mu > 0;$
+
+Let $\sigma = 1, n = 25, \text{so}, (\sigma/\sqrt{n}) = 0.2$
+
 \section{Using dates and time}
 This comes from \href{http://www.noamross.net/blog/2014/2/10/using-times-and-dates-in-r---presentation-code.html}{Bonnie Dixon}. This is an overview of using dates and times. 
 <<Dates>>=
@@ -89,4 +97,39 @@ trunc(tm1.lt, "days")
 trunc(tm1.lt, "mins")
 @
 There is information on the lubridate package in the document referenced. 
+
+\section{Regular Expressions}
+This is from the following site \href{http://robinlovelace.net//r/2014/04/14/regex-in-R-RStudio.html}{RobinLovelace}.  The basic regex in R is grep. 
+
+<<grep>>=
+x <- c("16_24cat", "25_34cat", "35-44catch", "45_54Cat", "55-104fat")
+grep(pattern = "cat", x = x)
+@
+Note the way that any case of the pattern is identified but it must be the correct case. 
+<<grep2>>=
+x <- c("16_24cat", "25_34cat", "35_44catch", "45_54Cat", "55-104fat")
+grep(pattern = "cat", x = x,ignore.case = T)
+@
+The function grepl is the same as grep but the output is a logical value.
+
+The fu8nction strsplit will split a string. In this case around the underscore.
+<<split>>=
+strsplit(x, split = "_")
+@
+To return the second element, 
+<<Combine>>=
+library(stringr)
+str_split_fixed(x, "_", 2)[,2]
+@
+For finding and replacing, use sub for the first case and gsub for all cases. 
+<<gsub>>=
+gsub(pattern = "cat$", replacement = "fat", x = x, ignore.case = T)
+@
+To insert an additional letter in all cases where there are two numbers followed by a letter, but only when the first number is 3 or less, 
+<<gsub2>>=
+gsub("([1-3][1-9][a-z])", "m\\1", x, perl = T, )
+@
+
+
+
 \end{document}

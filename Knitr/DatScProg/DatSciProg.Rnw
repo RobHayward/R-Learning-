@@ -1,0 +1,37 @@
+\documentclass[12pt, a4paper, oneside]{article} % Paper size, default font size and one-sided paper
+%\graphicspath{{./Figures/}} % Specifies the directory where pictures are stored
+%\usepackage[dcucite]{harvard}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage[flushleft]{threeparttable}
+\usepackage{multirow}
+\usepackage[comma, sort&compress]{natbib}% Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' 
+\usepackage{graphicx}
+%\bibliographystyle{plainnat}
+\bibliographystyle{agsm}
+\usepackage[colorlinks = true, citecolor = blue, linkcolor = blue]{hyperref}
+%\hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
+%\renewcommand[\harvardurl]{URL: \url}
+\begin{document}
+\title{Data Science and R Programming}
+\author{Rob Hayward}
+\date{\today}
+\maketitle
+\subsection*{Introduction}
+
+This is an introduction to data science and R programming. There are two Coursera courses.  The main clasess can be found \href{https://www.coursera.org/course/datascitoolbox}{Data science toolkit} and \href{https://class.coursera.org/rprog-004}{R Programming}.  
+
+\subsection{Git}
+Some rules for adding files
+\begin{itemize}
+\item git add . adds all new files
+\item git add -u updates tracking for files that were changed or deleted
+\item git add -A all new files and all changes.
+\end{itemize}
+
+
+
+
+\end{document}

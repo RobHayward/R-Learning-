@@ -65,7 +65,8 @@
 %\renewcommand[\harvardurl]{URL: \url}
 \usepackage{listings}
 \usepackage{color}
-\lstset{backgroundcolor=\color{yellow}}
+\definecolor{mygrey}{gray}{0.95}
+\lstset{backgroundcolor=\color{mygrey}}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 \title{Data Science and R Programming}
@@ -214,8 +215,84 @@ classes <- sapply(initial, class)
 tabAll <- readtable("datatable.txt", colClasses = classes)
 \end{lstlisting}
 
+Interfaces with the outside world
+\begin{itemize}
+\item \lstinline{file} connection to a file
+\item \lstinline{gzfile} connection to a gzip compression
+\item \lstinline{bzfile} connection to a bzip2 compression
+\item \lstinline{url} connection to a web page
+\end{itemize}
 
+\subsection{Control Structures}
+\begin{itemize}
+\item \lstinline{if, else}: testing a condition
+\item \lstinline{for}: executing a loop a fixed number of times
+\item \lstinline{while}: executing a loop \emph{while} a condition is in place
+\item \lstinline{repeat} execute an infinite loop
+\item \lstinline{breat}: break the execution of a loop
+\item \lstinline{next}: skip an iteration of a loop
+\item \lstinline{return}: exit function
+\end{itemize}
 
+Nexted loops are inside each other. These are usually going to be used with things like matrices. 
+
+\begin{lstlisting}
+x <- matrix(1:6, 2, 3)
+for(i in seq_len(nrow(x))) {
+  for(j in seq_len(ncol(x))) {
+    print(x[i,j])
+  }
+}
+\end{lstlisting}
+
+As another example that will keep flipping a coin until the score goes above or below a number. 
+
+\begin{lstlisting}
+z <- 5
+while(z >= 3 && z <=10) {
+  print(z)
+  coin <- rbinm(1, 1, 0.5)
+  
+  if(coin ==1) { ## randomm walk
+    z <- z + 1
+  } else {
+    z <- z -1
+  }
+}
+\end{lstlisting}
+
+Repeat could be used for running a loop until a certain tolerance is reached.  For example, 
+\begin{lstlisting}
+x0 <- 1
+tol <- 1e-8
+
+repeat {
+    x1 computeEstimate()
+    
+    if(abs(x1 - x0) < tol) {
+          break
+    } else {
+          x0 <- x1
+    }
+      
+}
+\end{lstlisting}
+
+This is used in optimistation algorithms. Usually good to add a limit on the number of repeats. For example a loop. 
+
+\section{Functions}
+Create an object of a class \lstinline{function}
+\emph{Lazy Evaluation} means that the arguments of the function are only evaluated as they are needed. If an artgument is not used or evaluated, there is no problem. However, if the function tries to perform some activity with an argument that does not exist (\lstinline{print} for example), it will throw an error. 
+
+The  \lstinline{...}argument is used to repeated already existing argument defaults.  For example, to extend a copy of the \lstinline{plot} function, 
+
+\begin{lstlisting}
+myplot <- function(x, y, type = 'l', ...) {
+  plot(x, y, type = type, ...)
+}
+\end{lstlisting}
+
+They can also be used with generic functions to pass additional arguments to the function.  All elements that are named after the \lstinline{...} have to be named explicitly. 
 
 
 

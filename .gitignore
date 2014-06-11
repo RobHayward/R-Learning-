@@ -1,4 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
-Notes.synctex.gz
+,Notes.synctex.gz
+,pdf
+.log
+,-concordance.tex

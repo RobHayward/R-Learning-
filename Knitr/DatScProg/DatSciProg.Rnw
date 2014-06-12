@@ -166,6 +166,171 @@ myplot <- function(x, y, type = 'l', ...) {
 
 They can also be used with generic functions to pass additional arguments to the function.  All elements that are named after the \lstinline{...} have to be named explicitly. 
 
+\subsection{Scoping}
+How does R assignm values to symbols? 
 
+For example, 
+
+\begin{lstlisting}
+lm <- function{x * x}
+lm
+\end{lstlisting}
+
+There is already a function called \lstinline{lm} in R. R will search for each of the packages in a list.  This can be found using the \lstinline{search} function. 
+
+<<search>>=
+search()
+@
+This will search the environments.  The first search is the \lstinline{Global Environment} is the workspace.  If you have something in the Global Environment, it will take that first. In this case, it will find the recently defined \lstinline{lm} function in the Global Environment and will use that insteady of the one in \lstinline{stats} package. The \lstinline{base} package is always the last on the list. 
+
+When a package is loaded with the \lstinline{library} function, that package gets put in the second place. R has separate namespaces for functions and other objects. However, in the global environment, it is only possible to have one object for each name. 
+
+Scoping rules deal with the way that values are assigned to variables.  Remember that there are variables that are the arguments of the function and other variables.  R uses \emph{lexical} or \emph{static} scoping rather than \emph{dynamic} scoping. This is particularly useful for statistical calculations. 
+
+For example, 
+
+\begin{lstlisting}
+f <- function(x, y) {
+  x^2 + y/z
+}
+\end{lstlisting}
+
+There are two formal arguments \lstinline{x} and \lstinline{y} but it is not clear where \lstinline{z} comes from. This is a free variable that was not defined. Scoping rules define how values are assigned to these \emph{free variables}. 
+
+Scoping rules
+\begin{itemize}
+\item  The values of the free variables are searched for in the environment in which the variable was defined.  
+\item An environment is a collection of (symbol, value) pairs. For example, \lstinline{x} is a symbol and \lstinline{3.1} may be the value. 
+\item Every environment has a parent.  It is possible for an environment to have multiple children. 
+\item The only environment without a parent is the \emph{empty environment}
+\item A function and an environment creates a closure. 
+\item Therefore, if the function is defined in the global environment, this will be teh first place that a value for the free variable will be sought. 
+\item If this does not work, the next stop is the parent environment. This is the next environment on the search list. If there is no value in the package, the search continues down until the empty environment is reached. 
+\item If there is no value in all the environments, an error is returned.
+\end{itemize}
+
+This becomes important when functions are defined within other functions.  Therefore, a fucntion can return a function. In this case the function is defined within another fucntion (not the global environment).  
+
+For example, 
+
+<<Func>>=
+make.power <- function(n) {
+  pow <- function(x) {
+    x^n
+  }
+    pow
+}
+cube <- make.power(3)
+square <- make.power(2)
+cube(3)
+square(3)
+@
+Here n is a free variable as it is not defined in the \lstinline{pow} function.  However, it is defined in the \lstinline{make.power} function. 
+
+To explain the difference between lexical and dynamic scoping, look at the following.
+<<Func2>>=
+y <- 10
+f <- function(x) {
+  y <- 2
+  y^2 + g(x)
+}
+g(x) <- function(x) {
+  
+}
+f(3)
+@
+In Lexical scoping, the value of \lstinline{y} in the function \lstinline{g} is looked up in the environment in which the function was defined, in this case the global environment, so the value of \lstinline{y} is 10. 
+
+With dynamic scoping, the value of \lstinline{y} is looked up in the envoronment from which the function was called (sometimes referred to as the \emph{calling environment}.).  In that case the value of \lstinline{y} would be 2. 
+
+if a function is called from the global environment, the global environment and the calling environment are the same so that Lexical scoping can appear to be dynamic scoping. 
+
+The consquences of Lexical scoping
+\begin{itemize}
+\item All objects in R must be stored in memory.
+\item All functions must carry a pointer to their respective defining environment.
+\end{itemize}
+
+\subsection{Vectorisation}
+This can be a way to avoid looping.  Vectroising makes things simple.  It applies the fuction to each element of a vector.  For example, 
+
+<<Vectorise>>=
+x <- 1:4
+y <- 6:9
+x + y
+x > 9
+y == 8
+x * y 
+x / y 
+@
+For matrix operation
+<<matrix>>=
+x <- 1:4
+y <- 6:9
+x * y # element wise multiplication
+x / y # element wise multiplication
+# True matrix multiplication
+x %*% y 
+@ 
+\subsection{Dates and times}
+
+Times have two formats
+\begin{itemize}
+\item \lstinline{POSIXct} large integer with the date and time
+\item \lstinline{POSIXlt} a list with information on the day of the week, year etc
+\end{itemize}
+Generic functions \lstinline{weekday, months, quarters} give the day, month name or quarter when applied to a \lstinline{date, POSIXct or POSIXlt} function.  Things can be moved back an forward between the \lstinline{POSIXct} and \lstinline{POSIXlt} functions. 
+
+<<time, tidy=TRUE>>=
+x <- Sys.time()
+x
+p <- as.POSIXlt(x)
+names(unclass(p))
+p$sec
+@ 
+The \lstinline{strptime} function will convert dates in character format into date or time objects. 
+<<time2>>=
+datestring <- c("January 10, 2012 10:40", "December 9, 2011 09:10")
+x <- strptime(datestring, "%B %d, %Y %H:%M")
+x
+class(x)
+@
+It is possible to use regular operations on dates and times.  However, different classes cannot be mixed.  For example, 
+
+<<Time3>>=
+x <- as.Date("2012-01-01")
+y <- strptime("9 Jan 2011 11:34.21", "%d %b %Y %H:%S")
+x - y
+x <- as.POSIXlt(x)
+x - y 
+@
+These operators keep track of very difficult things like leap years, leap seconds daylight savings and time zones. For example, 
+<<time4>>=
+x <- as.Date("2012-03-01")
+y <- as.Date("2012-02-28")
+x - y 
+x <- as.POSIXct(x)
+y <- as.POSIXct(y, tz = "GMT")
+y - x
+@
+The first shows the leap year and the second shows the difference in timezones. 
+\subsection{Loop functions}
+There are a number of loop functions in R
+\begin{itemize}
+\item \lstinline{lapply} Look over list and evaluate a function for each element.
+\item \lstinline{sapply} Same but simplify the result
+\item \lstinline{apply} Margins of an array
+\item \lstinline{{tapply} Apply over a subset of a vector
+\item \lstinline{mapply} Mulgtivariate version of tapply
+\end{itemize}
+
+Also \lstinline{split} is useful. 
+
+These make a lot of use of \emph{annonomous functions}.  These are functions that do not have names. For example, write a function to extract the first column.
+<<ann>>=
+x <- list(a = matrix(1:4, 2, 2), b = matrix(1:6, 3, 2))
+lapply(x, function(elt) elt[,1])
+@
+\lstinline{sapply} will simplify.  For example, it may return a vector if there is a list of single objects or it may return a matrix. 
 
 \end{document}

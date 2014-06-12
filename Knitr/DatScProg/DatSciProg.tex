@@ -294,6 +294,322 @@ myplot <- function(x, y, type = 'l', ...) {
 
 They can also be used with generic functions to pass additional arguments to the function.  All elements that are named after the \lstinline{...} have to be named explicitly. 
 
+\subsection{Scoping}
+How does R assignm values to symbols? 
 
+For example, 
+
+\begin{lstlisting}
+lm <- function{x * x}
+lm
+\end{lstlisting}
+
+There is already a function called \lstinline{lm} in R. R will search for each of the packages in a list.  This can be found using the \lstinline{search} function. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{search}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+##  [1] ".GlobalEnv"        "package:knitr"     "package:stats"    
+##  [4] "package:graphics"  "package:grDevices" "package:utils"    
+##  [7] "package:datasets"  "package:methods"   "Autoloads"        
+## [10] "package:base"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+This will search the environments.  The first search is the \lstinline{Global Environment} is the workspace.  If you have something in the Global Environment, it will take that first. In this case, it will find the recently defined \lstinline{lm} function in the Global Environment and will use that insteady of the one in \lstinline{stats} package. The \lstinline{base} package is always the last on the list. 
+
+When a package is loaded with the \lstinline{library} function, that package gets put in the second place. R has separate namespaces for functions and other objects. However, in the global environment, it is only possible to have one object for each name. 
+
+Scoping rules deal with the way that values are assigned to variables.  Remember that there are variables that are the arguments of the function and other variables.  R uses \emph{lexical} or \emph{static} scoping rather than \emph{dynamic} scoping. This is particularly useful for statistical calculations. 
+
+For example, 
+
+\begin{lstlisting}
+f <- function(x, y) {
+  x^2 + y/z
+}
+\end{lstlisting}
+
+There are two formal arguments \lstinline{x} and \lstinline{y} but it is not clear where \lstinline{z} comes from. This is a free variable that was not defined. Scoping rules define how values are assigned to these \emph{free variables}. 
+
+Scoping rules
+\begin{itemize}
+\item  The values of the free variables are searched for in the environment in which the variable was defined.  
+\item An environment is a collection of (symbol, value) pairs. For example, \lstinline{x} is a symbol and \lstinline{3.1} may be the value. 
+\item Every environment has a parent.  It is possible for an environment to have multiple children. 
+\item The only environment without a parent is the \emph{empty environment}
+\item A function and an environment creates a closure. 
+\item Therefore, if the function is defined in the global environment, this will be teh first place that a value for the free variable will be sought. 
+\item If this does not work, the next stop is the parent environment. This is the next environment on the search list. If there is no value in the package, the search continues down until the empty environment is reached. 
+\item If there is no value in all the environments, an error is returned.
+\end{itemize}
+
+This becomes important when functions are defined within other functions.  Therefore, a fucntion can return a function. In this case the function is defined within another fucntion (not the global environment).  
+
+For example, 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{make.power} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{n}\hlstd{) \{}
+    \hlstd{pow} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+        \hlstd{x}\hlopt{^}\hlstd{n}
+    \hlstd{\}}
+    \hlstd{pow}
+\hlstd{\}}
+\hlstd{cube} \hlkwb{<-} \hlkwd{make.power}\hlstd{(}\hlnum{3}\hlstd{)}
+\hlstd{square} \hlkwb{<-} \hlkwd{make.power}\hlstd{(}\hlnum{2}\hlstd{)}
+\hlkwd{cube}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 27
+\end{verbatim}
+\begin{alltt}
+\hlkwd{square}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Here n is a free variable as it is not defined in the \lstinline{pow} function.  However, it is defined in the \lstinline{make.power} function. 
+
+To explain the difference between lexical and dynamic scoping, look at the following.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{y} \hlkwb{<-} \hlnum{10}
+\hlstd{f} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+    \hlstd{y} \hlkwb{<-} \hlnum{2}
+    \hlstd{y}\hlopt{^}\hlnum{2} \hlopt{+} \hlkwd{g}\hlstd{(x)}
+\hlstd{\}}
+\hlkwd{g}\hlstd{(x)} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+\hlstd{\}}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}g<-"{}}}\begin{alltt}
+\hlkwd{f}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: could not find function "{}g"{}}}\end{kframe}
+\end{knitrout}
+
+In Lexical scoping, the value of \lstinline{y} in the function \lstinline{g} is looked up in the environment in which the function was defined, in this case the global environment, so the value of \lstinline{y} is 10. 
+
+With dynamic scoping, the value of \lstinline{y} is looked up in the envoronment from which the function was called (sometimes referred to as the \emph{calling environment}.).  In that case the value of \lstinline{y} would be 2. 
+
+if a function is called from the global environment, the global environment and the calling environment are the same so that Lexical scoping can appear to be dynamic scoping. 
+
+The consquences of Lexical scoping
+\begin{itemize}
+\item All objects in R must be stored in memory.
+\item All functions must carry a pointer to their respective defining environment.
+\end{itemize}
+
+\subsection{Vectorisation}
+This can be a way to avoid looping.  Vectroising makes things simple.  It applies the fuction to each element of a vector.  For example, 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{4}
+\hlstd{y} \hlkwb{<-} \hlnum{6}\hlopt{:}\hlnum{9}
+\hlstd{x} \hlopt{+} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1]  7  9 11 13
+\end{verbatim}
+\begin{alltt}
+\hlstd{x} \hlopt{>} \hlnum{9}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{y} \hlopt{==} \hlnum{8}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{x} \hlopt{*} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1]  6 14 24 36
+\end{verbatim}
+\begin{alltt}
+\hlstd{x}\hlopt{/}\hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.1667 0.2857 0.3750 0.4444
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+For matrix operation
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{4}
+\hlstd{y} \hlkwb{<-} \hlnum{6}\hlopt{:}\hlnum{9}
+\hlstd{x} \hlopt{*} \hlstd{y}  \hlcom{# element wise multiplication}
+\end{alltt}
+\begin{verbatim}
+## [1]  6 14 24 36
+\end{verbatim}
+\begin{alltt}
+\hlstd{x}\hlopt{/}\hlstd{y}  \hlcom{# element wise multiplication}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.1667 0.2857 0.3750 0.4444
+\end{verbatim}
+\begin{alltt}
+\hlcom{# True matrix multiplication}
+\hlstd{x} \hlopt{%*%} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+##      [,1]
+## [1,]   80
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Dates and times}
+
+Times have two formats
+\begin{itemize}
+\item \lstinline{POSIXct} large integer with the date and time
+\item \lstinline{POSIXlt} a list with information on the day of the week, year etc
+\end{itemize}
+Generic functions \lstinline{weekday, months, quarters} give the day, month name or quarter when applied to a \lstinline{date, POSIXct or POSIXlt} function.  Things can be moved back an forward between the \lstinline{POSIXct} and \lstinline{POSIXlt} functions. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{Sys.time}\hlstd{()}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] "2014-06-12 17:58:48 BST"
+\end{verbatim}
+\begin{alltt}
+\hlstd{p} \hlkwb{<-} \hlkwd{as.POSIXlt}\hlstd{(x)}
+\hlkwd{names}\hlstd{(}\hlkwd{unclass}\hlstd{(p))}
+\end{alltt}
+\begin{verbatim}
+## [1] "sec"   "min"   "hour"  "mday"  "mon"   "year"  "wday"  "yday"  "isdst"
+\end{verbatim}
+\begin{alltt}
+\hlstd{p}\hlopt{$}\hlstd{sec}
+\end{alltt}
+\begin{verbatim}
+## [1] 48.7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The \lstinline{strptime} function will convert dates in character format into date or time objects. 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{datestring} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"January 10, 2012 10:40"}\hlstd{,} \hlstr{"December 9, 2011 09:10"}\hlstd{)}
+\hlstd{x} \hlkwb{<-} \hlkwd{strptime}\hlstd{(datestring,} \hlstr{"%B %d, %Y %H:%M"}\hlstd{)}
+\hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## [1] "2012-01-10 10:40:00" "2011-12-09 09:10:00"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{class}\hlstd{(x)}
+\end{alltt}
+\begin{verbatim}
+## [1] "POSIXlt" "POSIXt"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+It is possible to use regular operations on dates and times.  However, different classes cannot be mixed.  For example, 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(}\hlstr{"2012-01-01"}\hlstd{)}
+\hlstd{y} \hlkwb{<-} \hlkwd{strptime}\hlstd{(}\hlstr{"9 Jan 2011 11:34.21"}\hlstd{,} \hlstr{"%d %b %Y %H:%S"}\hlstd{)}
+\hlstd{x} \hlopt{-} \hlstd{y}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: Incompatible methods ("{}-.Date"{}, "{}-.POSIXt"{}) for "{}-"{}}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: non-numeric argument to binary operator}}\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{as.POSIXlt}\hlstd{(x)}
+\hlstd{x} \hlopt{-} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## Time difference of 356.5 days
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+These operators keep track of very difficult things like leap years, leap seconds daylight savings and time zones. For example, 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(}\hlstr{"2012-03-01"}\hlstd{)}
+\hlstd{y} \hlkwb{<-} \hlkwd{as.Date}\hlstd{(}\hlstr{"2012-02-28"}\hlstd{)}
+\hlstd{x} \hlopt{-} \hlstd{y}
+\end{alltt}
+\begin{verbatim}
+## Time difference of 2 days
+\end{verbatim}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{as.POSIXct}\hlstd{(x)}
+\hlstd{y} \hlkwb{<-} \hlkwd{as.POSIXct}\hlstd{(y,} \hlkwc{tz} \hlstd{=} \hlstr{"GMT"}\hlstd{)}
+\hlstd{y} \hlopt{-} \hlstd{x}
+\end{alltt}
+\begin{verbatim}
+## Time difference of -2 days
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The first shows the leap year and the second shows the difference in timezones. 
+\subsection{Loop functions}
+There are a number of loop functions in R
+\begin{itemize}
+\item \lstinline{lapply} Look over list and evaluate a function for each element.
+\item \lstinline{sapply} Same but simplify the result
+\item \lstinline{apply} Margins of an array
+\item \lstinline{{tapply} Apply over a subset of a vector
+\item \lstinline{mapply} Mulgtivariate version of tapply
+\end{itemize}
+
+Also \lstinline{split} is useful. 
+
+These make a lot of use of \emph{annonomous functions}.  These are functions that do not have names. For example, write a function to extract the first column.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwc{a} \hlstd{=} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{b} \hlstd{=} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{2}\hlstd{))}
+\hlkwd{lapply}\hlstd{(x,} \hlkwa{function}\hlstd{(}\hlkwc{elt}\hlstd{) elt[,} \hlnum{1}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## $a
+## [1] 1 2
+## 
+## $b
+## [1] 1 2 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\lstinline{sapply} will simplify.  For example, it may return a vector if there is a list of single objects or it may return a matrix. 
 
 \end{document}

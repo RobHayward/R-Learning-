@@ -497,7 +497,7 @@ Generic functions \lstinline{weekday, months, quarters} give the day, month name
 \hlstd{x}
 \end{alltt}
 \begin{verbatim}
-## [1] "2014-06-12 17:58:48 BST"
+## [1] "2014-06-20 14:28:01 BST"
 \end{verbatim}
 \begin{alltt}
 \hlstd{p} \hlkwb{<-} \hlkwd{as.POSIXlt}\hlstd{(x)}
@@ -510,7 +510,7 @@ Generic functions \lstinline{weekday, months, quarters} give the day, month name
 \hlstd{p}\hlopt{$}\hlstd{sec}
 \end{alltt}
 \begin{verbatim}
-## [1] 48.7
+## [1] 1.317
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -612,4 +612,262 @@ These make a lot of use of \emph{annonomous functions}.  These are functions tha
 
 \lstinline{sapply} will simplify.  For example, it may return a vector if there is a list of single objects or it may return a matrix. 
 
+Special functions
+\begin{itemize}
+\item \lstinline{rowSums - apply(x, 1, sum)}
+\item \lstinline{rowMean = apply(x, 1, mean)}
+\item \lstinline{colSums = apply(x, 2, sum)}
+\item \lstinline{colMean = apply(x, 2, mean)}
+\end{itemize}
+
+This also works on an array. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlkwd{array}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{2} \hlopt{*} \hlnum{2} \hlopt{*} \hlnum{10}\hlstd{),} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{10}\hlstd{))}
+\hlkwd{apply}\hlstd{(a,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{), mean)}
+\end{alltt}
+\begin{verbatim}
+##         [,1]     [,2]
+## [1,] -0.5248 -0.48346
+## [2,]  0.2254 -0.03591
+\end{verbatim}
+\begin{alltt}
+\hlkwd{rowMeans}\hlstd{(a,} \hlkwc{dim} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##         [,1]     [,2]
+## [1,] -0.5248 -0.48346
+## [2,]  0.2254 -0.03591
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+There are 10 $2 \times 2$ matrices and we want to take the mean of the matrices.  It will keep the first two dimensions and average over the third dimension.  Hence \lstinline{c(1, 2)}
+
+For \lstinline{tapply} a function can be applied across a subset of a vector.  For example, here there are three different types of random variable and they are associated wtih factors one to three with the \lstinline{gl} function. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{),} \hlkwd{runif}\hlstd{(}\hlnum{10}\hlstd{),} \hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlstd{f} \hlkwb{<-} \hlkwd{gl}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{10}\hlstd{)}
+\hlstd{f}
+\end{alltt}
+\begin{verbatim}
+##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3
+## Levels: 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlkwd{tapply}\hlstd{(x, f, mean)}
+\end{alltt}
+\begin{verbatim}
+##      1      2      3 
+## 0.5283 0.4080 0.4635
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\lstinline{split} can be used to split a vector into parts that are identified by a factor.  It will return a list. For example, 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{split}\hlstd{(airquality, airquality}\hlopt{$}\hlstd{Month)}
+\hlkwd{sapply}\hlstd{(s,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{colMeans}\hlstd{(x[,} \hlkwd{c}\hlstd{(}\hlstr{"Ozone"}\hlstd{,} \hlstr{"Solar.R"}\hlstd{,} \hlstr{"Wind"}\hlstd{)],} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##              5      6       7       8      9
+## Ozone    23.62  29.44  59.115  59.962  31.45
+## Solar.R 181.30 190.17 216.484 171.857 167.43
+## Wind     11.62  10.27   8.942   8.794  10.18
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Split can also be done over multiple factors.  For example, 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{)}
+\hlstd{f1} \hlkwb{<-} \hlkwd{gl}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{5}\hlstd{)}
+\hlstd{f2} \hlkwb{<-} \hlkwd{gl}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{2}\hlstd{)}
+\hlstd{f1}
+\end{alltt}
+\begin{verbatim}
+##  [1] 1 1 1 1 1 2 2 2 2 2
+## Levels: 1 2
+\end{verbatim}
+\begin{alltt}
+\hlstd{f2}
+\end{alltt}
+\begin{verbatim}
+##  [1] 1 1 2 2 3 3 4 4 5 5
+## Levels: 1 2 3 4 5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{interaction}\hlstd{(f1, f2)}
+\end{alltt}
+\begin{verbatim}
+##  [1] 1.1 1.1 1.2 1.2 1.3 2.3 2.4 2.4 2.5 2.5
+## Levels: 1.1 2.1 1.2 2.2 1.3 2.3 1.4 2.4 1.5 2.5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str}\hlstd{(}\hlkwd{split}\hlstd{(x,} \hlkwd{list}\hlstd{(f1, f2)))}
+\end{alltt}
+\begin{verbatim}
+## List of 10
+##  $ 1.1: num [1:2] -0.689 0.483
+##  $ 2.1: num(0) 
+##  $ 1.2: num [1:2] 0.192 0.191
+##  $ 2.2: num(0) 
+##  $ 1.3: num -0.402
+##  $ 2.3: num 1.55
+##  $ 1.4: num(0) 
+##  $ 2.4: num [1:2] -1.376 -0.408
+##  $ 1.5: num(0) 
+##  $ 2.5: num [1:2] 0.694 0.359
+\end{verbatim}
+\begin{alltt}
+\hlkwd{str}\hlstd{(}\hlkwd{split}\hlstd{(x,} \hlkwd{list}\hlstd{(f1, f2),} \hlkwc{drop} \hlstd{=} \hlnum{TRUE}\hlstd{))}  \hlcom{# drop empty levels}
+\end{alltt}
+\begin{verbatim}
+## List of 6
+##  $ 1.1: num [1:2] -0.689 0.483
+##  $ 1.2: num [1:2] 0.192 0.191
+##  $ 1.3: num -0.402
+##  $ 2.3: num 1.55
+##  $ 2.4: num [1:2] -1.376 -0.408
+##  $ 2.5: num [1:2] 0.694 0.359
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\lstinline{mapply} is a multivariate version.  If there are two lists and the elements of each list go into the function, \lstinline{mapply} may apply. In this case, 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(mapply)}
+\end{alltt}
+\begin{verbatim}
+## function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Where \lstinline{FUN} is the function to be applied, \lstinline{...} contains the arguments for it to be applied over; \lstinline{MoreArgs} are more arguments to pass to the function.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{list}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{4}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{1}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{mapply}\hlstd{(rep,} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,} \hlnum{4}\hlopt{:}\hlnum{1}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] 1 1 1 1
+## 
+## [[2]]
+## [1] 2 2 2
+## 
+## [[3]]
+## [1] 3 3
+## 
+## [[4]]
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Logical expressions}
+if we have two logical expressions A and B, \lstinline{A | B} will ask whether at least one is true (union); \lstinline{A & B} will ask whether both are TRUE (ie intersection).  \lstinline{!A} is the negaton of A. 
+
+\subsection{Character vectors}
+Use the \lstinline{paste} function to put words that are in a character vector together or to join the elements of multiple character vectors.  For example, 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{my_name} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"My name"}\hlstd{,} \hlstr{"is"}\hlstd{,} \hlstr{"Rob"}\hlstd{)}
+\hlkwd{paste}\hlstd{(my_name,} \hlkwc{collapse} \hlstd{=} \hlstr{" "}\hlstd{)}  \hlcom{# the collapse is the }
+\end{alltt}
+\begin{verbatim}
+## [1] "My name is Rob"
+\end{verbatim}
+\begin{alltt}
+# space between.
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Alternatively, 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{paste}\hlstd{(}\hlstr{"Hello"}\hlstd{,} \hlstr{"world!"}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{)}  \hlcom{# now sep is the separate.}
+\end{alltt}
+\begin{verbatim}
+## [1] "Hello world!"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\subsection{Debugging}
+Something is wrong
+\begin{itemize}
+\item \lstinline{message}: notification/diagnostic 
+\item \lstinline{warning}: indication that something is wrong, but not fatally. 
+\item \lstinline{error}: a fatal problem has occured
+\item \lstinline{condition}: these are all conditions that can be created in the programme
+\end{itemize}
+
+\lstinline{invisible} is a function that prevents auto-printing. If this is called on the return object, this will prevent it being returned. 
+
+Debugging tools in R
+\begin{itemize}
+\item \lstinline{traceback} prints out the function call stack
+\item \lstinline{debug} flags a function for debug mode which allows step through. 
+\item \lstinline{browser} suspends the execution of the function and puts it in debug mode. 
+\item \lstinline{trace} allows you to insert debugging code
+\item \lstinline{recover} allows modification of the error behaviour so that function cal stack can be reviewed.
+\end{itemize}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{mean}\hlstd{(f)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: argument is not numeric or logical: returning NA}}\begin{verbatim}
+## [1] NA
+\end{verbatim}
+\begin{alltt}
+\hlkwd{traceback}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## No traceback available
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\lstinline{traceback} will list that past error.  
+
+\lstinline{debug} will open a workspace within a workspace.  This environment is the function environment. By pessing \lstinline{n} it will move to the next line until the error is reached. The debugger can build like a nest on top of another debugger. You can call the debug function on functions within the function. 
+
+\lstinline{recover} will proivide options for going into the code to find out what went wrong. 
 \end{document}

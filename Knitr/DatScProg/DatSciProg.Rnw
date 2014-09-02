@@ -333,4 +333,102 @@ lapply(x, function(elt) elt[,1])
 @
 \lstinline{sapply} will simplify.  For example, it may return a vector if there is a list of single objects or it may return a matrix. 
 
+Special functions
+\begin{itemize}
+\item \lstinline{rowSums - apply(x, 1, sum)}
+\item \lstinline{rowMean = apply(x, 1, mean)}
+\item \lstinline{colSums = apply(x, 2, sum)}
+\item \lstinline{colMean = apply(x, 2, mean)}
+\end{itemize}
+
+This also works on an array. 
+
+<<array>>=
+a <- array(rnorm(2 * 2 * 10), c(2, 2, 10))
+apply(a, c(1, 2), mean)
+rowMeans(a, dim = 2)
+@
+There are 10 $2 \times 2$ matrices and we want to take the mean of the matrices.  It will keep the first two dimensions and average over the third dimension.  Hence \lstinline{c(1, 2)}
+
+For \lstinline{tapply} a function can be applied across a subset of a vector.  For example, here there are three different types of random variable and they are associated wtih factors one to three with the \lstinline{gl} function. 
+
+<<factor>>=
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10)
+f
+tapply(x, f, mean)
+@
+\lstinline{split} can be used to split a vector into parts that are identified by a factor.  It will return a list. For example, 
+<<split>>=
+s <- split(airquality, airquality$Month)
+sapply(s, function(x) colMeans(x[,c("Ozone", "Solar.R", "Wind")], 
+                               na.rm = TRUE))
+@
+Split can also be done over multiple factors.  For example, 
+<<split2>>=
+x <- rnorm(10)
+f1 <- gl(2, 5)
+f2 <- gl(5, 2)
+f1
+f2
+interaction(f1, f2)
+str(split(x, list(f1, f2)))
+str(split(x, list(f1, f2), drop = TRUE)) # drop empty levels
+@
+\lstinline{mapply} is a multivariate version.  If there are two lists and the elements of each list go into the function, \lstinline{mapply} may apply. In this case, 
+<<mapply>>=
+str(mapply)
+@
+Where \lstinline{FUN} is the function to be applied, \lstinline{...} contains the arguments for it to be applied over; \lstinline{MoreArgs} are more arguments to pass to the function.
+
+<<mapply2>>=
+list(rep(1, 4), rep(2, 3), rep(4, 1))
+mapply(rep, 1:4, 4:1)
+@
+\subsection{Logical expressions}
+if we have two logical expressions A and B, \lstinline{A | B} will ask whether at least one is true (union); \lstinline{A & B} will ask whether both are TRUE (ie intersection).  \lstinline{!A} is the negaton of A. 
+
+\subsection{Character vectors}
+Use the \lstinline{paste} function to put words that are in a character vector together or to join the elements of multiple character vectors.  For example, 
+
+<<myname>>=
+my_name <- c("My name", "is", "Rob")
+paste(my_name, collapse = " ") # the collapse is the 
+# space between.
+@
+Alternatively, 
+
+<<helloword>>=
+paste("Hello", "world!", sep = " ") # now sep is the separate.
+@
+
+\subsection{Debugging}
+Something is wrong
+\begin{itemize}
+\item \lstinline{message}: notification/diagnostic 
+\item \lstinline{warning}: indication that something is wrong, but not fatally. 
+\item \lstinline{error}: a fatal problem has occured
+\item \lstinline{condition}: these are all conditions that can be created in the programme
+\end{itemize}
+
+\lstinline{invisible} is a function that prevents auto-printing. If this is called on the return object, this will prevent it being returned. 
+
+Debugging tools in R
+\begin{itemize}
+\item \lstinline{traceback} prints out the function call stack
+\item \lstinline{debug} flags a function for debug mode which allows step through. 
+\item \lstinline{browser} suspends the execution of the function and puts it in debug mode. 
+\item \lstinline{trace} allows you to insert debugging code
+\item \lstinline{recover} allows modification of the error behaviour so that function cal stack can be reviewed.
+\end{itemize}
+
+<<degug>>=
+mean(f)
+traceback()
+@
+\lstinline{traceback} will list that past error.  
+
+\lstinline{debug} will open a workspace within a workspace.  This environment is the function environment. By pessing \lstinline{n} it will move to the next line until the erase.screenror is reached. The debugger can build like a nest on top of another debugger. You can call the debug function on functions within the function. 
+
+\lstinline{recover} will proivide options for going into the code to find out what went wrong. 
 \end{document}

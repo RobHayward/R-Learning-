@@ -1,0 +1,29 @@
+---
+title: "CEO Compensation"
+author: "Rob Hayward"
+date: "Thursday, July 31, 2014"
+output: html_document
+---
+
+This is an attempt to run through Arthur Charpentier's assessment of CEO Compensation <http://freakonometrics.hypotheses.org/15999>.
+
+The first step is to aquire the data from the New York times web site by reading into the HTML table
+
+```{r, cache=TRUE}
+library(XML)
+CC <- c("integer", "integer", "character","character", "character", "character")
+URL <- "http://www.equilar.com/nytimes/the-new-york-times-200-highest-paid-ceos"
+table <- readHTMLTable(URL, header = TRUE, which = 1, stringsAsFactors = FALSE, 
+colClass = CC)
+table[,6] <- gsub("(\\$)", replacement = "", x = table[,6])
+table[,6] <- as.numeric(gsub("(,)", replacement = "", x = table[,6])) 
+str(table)
+```
+Now turn to Arthur.  First the data are normalilsed by dividing by the size of the dataset. 
+
+```{r}
+n=nrow(table)
+U=rank(table[,1])/(n+1)
+V=rank(table[,2])/(n+1)
+plot(U,V,xlab="Rank CEO Pay",  ylab="Rank Stock Return")
+```

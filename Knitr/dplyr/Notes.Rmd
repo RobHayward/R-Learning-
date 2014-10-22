@@ -1,9 +1,78 @@
 ---
-title: "Introduction to tidyr, dply and ggvis"
+title: "Learning R"
 author: "Rob Hayward"
 date: "Thursday, August 28, 2014"
 output: html_document
 ---
+# The apply family
+This comes from [Rolling your Rs](http://rollingyours.wordpress.com/2014/05/15/the-apply-command-101/).  ```apply``` is applied to a matrix or dataframe.  It returns a matrix or vector.  To take the mean of a column
+```{r}
+set.seed(1)
+mymat <- matrix(round(rnorm(16, 10), 2), 4, 4)
+apply(mymat, 2, mean)
+```
+The number 2 indicates that it is run across columns.  It would be 1 for rows. Addditional arguments can be passed to the function.  For example, ```na.rm ``` or ```trim```.   
+```{r}
+apply(mymat, 2, mean, na.rm = T, trim = 0.5)
+````
+Functions can also be passed anonymously.  
+```{r}
+apply(mymat, 2, function(x) x/sum(x))
+```
+Final example, 
+```{r}
+url <- "http://steviep42.bitbucket.org/data/su_et_al_2002.txt"
+mydata <- read.csv(url, header = T)
+str(mydata)
+apply(mydata, 2, function(x) c(mu = mean(x), sd = sd(x)))
+```
+
+
+# lapply command 101
+This comes from [Rolling your Rs](http://rollingyours.wordpress.com/2014/10/20/the-lapply-command-101/)
+This is a very important way of dealing with lists. This is the way to hold hetrogenous data. Create a list for family attributed. 
+```{r}
+family1 <- list(name = "Jones", numofchild = 2, ages = c(5, 7), 
+                measles = c("Y", "N"))
+```
+The ```lapply``` function can be applied to this list. The following loops through the list to find the class of each element.
+
+```{r}
+str(lapply(family1, typeof))
+```
+To show how to pass an anonymous function to ```lapply```, 
+```{r} 
+str(lapply(family1, function(x) typeof(x)))
+```
+The function can also be defined in advance.
+```{r} 
+simplefunc <- function(x){
+  mytype <- typeof(x)
+  return(mytype)
+}
+lapply(family1, simplefunc)
+```
+It is possible to create a list of families
+```{r}
+family2 <- list(name="Espinoza",numofchild=4,ages=c(5,7,9,11),measles=c("Y","N","Y","Y"))
+family3 <- list(name="Ginsberg",numofchild=3,ages=c(9,13,18),measles=c("Y","N","Y"))
+family4 <- list(name="Souza",numofchild=5,ages=c(3,5,7,9,11),measles=c("N","Y","Y","Y","N"))
+allfams <- list(f1=family1,f2=family2,f3=family3,f4=family4)
+lapply(allfams, function(x) mean(x$ages))
+```
+The ```lapply``` function can be used effectivley with the ```split``` function.  ```split``` will return a list of dataframes.  For example, it is possible to split the mcars dataframe into cylinder types. 
+```{r}
+unique(mtcars$cyl)
+mydfs <- split(mtcars, mtcars$cyl)
+str(mydfs, max.level = 1)
+lapply(mydfs, function(x) mean(x$mpg))
+```
+Or more advanced
+```{r}
+tapply(mtcars$mpg, mtcars$cyl, mean)
+```
+
+
 #Tidy and dplyr from HW
 This comes from [R-Studio video.  ](http://pages.rstudio.net/Webinar-Series-Recording-Essential-Tools-for-R.html?mkt_tok=3RkMMJWWfF9wsRonuqzMZKXonjHpfsX56uovXKO2lMI%2F0ER3fOvrPUfGjI4ATMFlI%2BSLDwEYGJlv6SgFTbDMMa541LgKWxc%3D)
 Not sure how long this will last. The first part is about the package ```tidyr```.  The three main commands are **gather**, **spread** and **separate**.  There is a 30-page document about *tidy data*.   There can be a link between ```tidyr``` and ```dplyr``` and ```ggvis```.  

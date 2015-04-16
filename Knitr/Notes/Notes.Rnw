@@ -3,6 +3,7 @@
 %\usepackage[dcucite]{harvard}
 \usepackage{rotating}
 \usepackage{amsmath}
+\usepackage{listings}
 \usepackage{setspace}
 \usepackage{pdflscape}
 \usepackage[flushleft]{threeparttable}
@@ -19,6 +20,52 @@
 \author{Rob Hayward}
 \date{\today}
 \maketitle
+\section{Lists}
+This is from \href{http://rforpublichealth.blogspot.co.uk/2015/03/basics-of-lists.html}{R for Public Health}
+The list of a collection of objects
+<<Example1>>=
+vec <- 1:4
+df <- data.frame(y = c(1:3), x = c("m", "m", "f"))
+char <- "Hello"
+list1 <- list(vec, df, char)
+list1
+@
+Any object can be turned into a list with \lstinline{as.list}.  Componets can be named using \lstinline{names} and extraced with the name or with the \lstinline{[[]]}.  If \lstinline{[]} is used, it will return a list not the original class. 
+<<Example2>>=
+list1[3]
+@ 
+compared to 
+<<Example3>>=
+list1[[3]]
+@
+Remove lements by assigning them \lstinline{null}.  Convet a list into one  long vector with \lstinline{unlist()}. 
+
+ 
+\section{Inequality}
+This comes from \href{http://freakonometrics.hypotheses.org/18858}{Arthur Charpentier}.  
+
+Not started. 
+<<library, warning=FALSE, cache=TRUE>>=
+library("ineq")
+load(url("http://freakonometrics.free.fr/income_500.RData"))
+income = sort(income)
+income[1]/sum(income)
+sum(income[1:2])/sum(income)
+sum(income[1:3])/sum(income)
+sum(income[1:4])/sum(income)
+plot(Lc(income))
+points(c(0:5)/5, c(0, cumsum(income)/sum(income)), pch = 19, col = "blue")
+@
+<<da, warning=FALSE, cache=TRUE>>=
+load(url("http://freakonometrics.free.fr/income_500.RData"))
+summary(income)
+hist(log(income),probability=TRUE,col="light blue",border="white")
+lines(density(log(income)),col="red")
+u=seq(6,15,length=251)
+lines(u,dnorm(u,mean(log(income)),sd(log(income))),col="blue")
+@
+These points do not work. The code creates 501 points agaisnt 5. Need to change code.  
+
 \section{Power of tests}
 This comes from \href{http://errorstatistics.com/2014/03/12/get-empowered-to-detect-power-howlers/}{Error Statistics Philosophy}.  The statistical stignificance of a test does not mean much without some information on the power of the test. For example, if the smoke alarm is very sensitive, the alarm going off is not a strong indication of a fire; if the alarm is lacking sensitivity, the alarm is a very good signa. 
 

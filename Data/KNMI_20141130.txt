@@ -1,0 +1,44 @@
+# BRON: KONINKLIJK NEDERLANDS METEOROLOGISCH INSTITUUT (KNMI)
+# Opmerking: door stationsverplaatsingen en veranderingen in waarneemmethodieken zijn deze tijdreeksen van dagwaarden mogelijk inhomogeen! Dat betekent dat deze reeks van gemeten waarden niet geschikt is voor trendanalyse. Voor studies naar klimaatverandering verwijzen we naar de gehomogeniseerde reeks maandtemperaturen van De Bilt <http://www.knmi.nl/klimatologie/onderzoeksgegevens/homogeen_260/index.html> of de Centraal Nederland Temperatuur <http://www.knmi.nl/klimatologie/onderzoeksgegevens/CNT/>.
+# 
+# 
+# STN      LON(east)   LAT(north)     ALT(m)  NAME
+# 260:         5.177       52.101       2.00  DE BILT
+# 
+# YYYYMMDD = Datum (YYYY=jaar MM=maand DD=dag); 
+# TG       = Etmaalgemiddelde temperatuur (in 0.1 graden Celsius); 
+# TN       = Minimum temperatuur (in 0.1 graden Celsius); 
+# TX       = Maximum temperatuur (in 0.1 graden Celsius); 
+# 
+# STN,YYYYMMDD,   TG,   TN,   TX
+# 
+  260,20141101,  141,  102,  185
+  260,20141102,  148,  127,  174
+  260,20141103,  125,   94,  153
+  260,20141104,   89,   55,  109
+  260,20141105,   60,   35,   95
+  260,20141106,   61,   45,   82
+  260,20141107,   77,   45,   98
+  260,20141108,   98,   81,  129
+  260,20141109,   95,   72,  128
+  260,20141110,   96,   59,  126
+  260,20141111,   95,   57,  129
+  260,20141112,   93,   41,  122
+  260,20141113,   79,   36,  133
+  260,20141114,  103,   69,  124
+  260,20141115,   97,   75,  110
+  260,20141116,   84,   71,   92
+  260,20141117,   95,   81,  123
+  260,20141118,   79,   73,   83
+  260,20141119,   80,   73,   91
+  260,20141120,   71,   52,   80
+  260,20141121,   52,   16,   90
+  260,20141122,   83,   45,  118
+  260,20141123,  106,   80,  135
+  260,20141124,   65,    3,  113
+  260,20141125,   41,  -14,   91
+  260,20141126,   49,   24,   64
+  260,20141127,   74,   61,   88
+  260,20141128,   63,   26,   95
+  260,20141129,   28,   11,   49
+  260,20141130,   25,   18,   31

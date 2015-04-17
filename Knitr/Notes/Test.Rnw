@@ -19,6 +19,7 @@
 \author{Rob Hayward}
 \date{\today}
 \maketitle
+
 \section{Inequality}
 This comes from \href{http://freakonometrics.hypotheses.org/18859}{Arthur Charpentier}.  
 \frame{}

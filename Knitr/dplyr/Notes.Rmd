@@ -4,7 +4,7 @@ author: "Rob Hayward"
 date: "Thursday, August 28, 2014"
 output: html_document
 ---
-# Some notes on \lstinline{dplyr}
+# Some notes on the dplyr package. 
 This comes from [Roger Penn}(https://www.youtube.com/watch?v=aywFompr1F4&list=TLmZovpghOuEo)
 
 # Simple Simulation
@@ -16,9 +16,7 @@ This comes from [>>R](http://www.r-bloggers.com/simple-probs/).  It is a very si
 * Simulate
 * Calculte the number of times tht Dillema wins
 
-```{r}
-dimela
-```
+
 # The apply family
 This comes from [Rolling your Rs](http://rollingyours.wordpress.com/2014/05/15/the-apply-command-101/).  ```apply``` is applied to a matrix or dataframe.  It returns a matrix or vector.  To take the mean of a column
 ```{r}

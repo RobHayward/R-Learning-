@@ -1,0 +1,9 @@
+\documentclass{hitec}
+\usepackage{tikz}
+\title{Mapping Notes}
+\author{Rob Hayward}
+\begin{document}
+\maketitle
+\section*{Introduction}
+
+\end{document}  

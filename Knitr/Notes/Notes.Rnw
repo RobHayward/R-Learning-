@@ -20,6 +20,30 @@
 \author{Rob Hayward}
 \date{\today}
 \maketitle
+\section{Apply}
+This is from \href{http://blog.datacamp.com/r-tutorial-apply-family/}{R Data Camp}.  This is about manipulating data in a systematic way.  Different functions for different classes. THe aim is to avoid the explicit use of loop. They act on a list, data frame or array and apply a function.  
+
+\lstinline{apply} acts on arrays.  Here it will be applied to a two dimensional array (a matrix). \lstinline{apply(X, Margin, FUN, ...)}. 
+<<one>>=
+x <- matrix(rnorm(30), nrow = 5, ncol = 6)
+apply(x, 2, sum)
+@
+This will sum the columns (margin = 2).  
+
+\lstinline{lapply} will work on a list, data frame or vector; it returns a list. 
+
+<<two>>=
+A <- matrix(1:9, 3, 3)
+B <- matrix(4:15, 4, 3)
+C <- matrix(8:10, 3, 2)
+MyList <- list(A, B, C)
+
+# extract the second column from the lists using  the selection operator "["
+lapply(MyList, "[", , 2)
+@
+The function is the \emph{selection operator}, the next argument is left open so it will take all members of the list, finally the column is selected. 
+
+
 \section{Lists}
 This is from \href{http://rforpublichealth.blogspot.co.uk/2015/03/basics-of-lists.html}{R for Public Health}
 The list of a collection of objects

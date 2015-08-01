@@ -4,6 +4,20 @@ author: "Rob Hayward"
 date: "Thursday, August 28, 2014"
 output: html_document
 ---
+# Further notes on dplyr
+This comes from [HOXO-M](http://mockquant.blogspot.co.uk/2015/07/the-complete-catalog-of-argument.html)
+
+This is primarily about the ways that variables can be selected with functions like *select*
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(nycflights13)
+set.seed(123)
+data <- sample_n(flights, 3)
+glimpse(data)
+```
+
+
 # Some notes on the dplyr package. 
 This comes from [Roger Penn}(https://www.youtube.com/watch?v=aywFompr1F4&list=TLmZovpghOuEo)
 

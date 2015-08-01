@@ -67,6 +67,46 @@ img {
 </div>
 
 
+<div id="further-notes-on-dplyr" class="section level1">
+<h1>Further notes on dplyr</h1>
+<p>This comes from <a href="http://mockquant.blogspot.co.uk/2015/07/the-complete-catalog-of-argument.html">HOXO-M</a></p>
+<p>This is primarily about the ways that variables can be selected with functions like <em>select</em></p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.2.1</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(nycflights13)</code></pre>
+<pre><code>## Warning: package 'nycflights13' was built under R version 3.2.1</code></pre>
+<pre class="r"><code>set.seed(123)
+data &lt;- sample_n(flights, 3)
+glimpse(data)</code></pre>
+<pre><code>## Observations: 3
+## Variables:
+## $ year      (int) 2013, 2013, 2013
+## $ month     (int) 12, 7, 3
+## $ day       (int) 15, 17, 2
+## $ dep_time  (int) 2124, 651, 1636
+## $ dep_delay (dbl) -4, -9, 1
+## $ arr_time  (int) 2322, 936, 1800
+## $ arr_delay (dbl) 1, -28, 0
+## $ carrier   (chr) &quot;UA&quot;, &quot;DL&quot;, &quot;WN&quot;
+## $ tailnum   (chr) &quot;N801UA&quot;, &quot;N194DN&quot;, &quot;N475WN&quot;
+## $ flight    (int) 289, 763, 1501
+## $ origin    (chr) &quot;EWR&quot;, &quot;JFK&quot;, &quot;LGA&quot;
+## $ dest      (chr) &quot;DTW&quot;, &quot;LAX&quot;, &quot;MKE&quot;
+## $ air_time  (dbl) 88, 306, 103
+## $ distance  (dbl) 488, 2475, 738
+## $ hour      (dbl) 21, 6, 16
+## $ minute    (dbl) 24, 51, 36</code></pre>
+</div>
 <div id="some-notes-on-the-dplyr-package." class="section level1">
 <h1>Some notes on the dplyr package.</h1>
 <p>This comes from [Roger Penn}(<a href="https://www.youtube.com/watch?v=aywFompr1F4&amp;list=TLmZovpghOuEo" class="uri">https://www.youtube.com/watch?v=aywFompr1F4&amp;list=TLmZovpghOuEo</a>)</p>
@@ -218,10 +258,18 @@ head(arrange(games, desc(total)), 5)</code></pre>
   summarise(total = sum(G)) %.%
   arrange(desc(total))%.%
   head(5)</code></pre>
-<pre><code>## Warning: %.% is deprecated. Please use %&gt;%</code></pre>
-<pre><code>## Warning: %.% is deprecated. Please use %&gt;%</code></pre>
-<pre><code>## Warning: %.% is deprecated. Please use %&gt;%</code></pre>
-<pre><code>## Warning: %.% is deprecated. Please use %&gt;%</code></pre>
+<pre><code>## Warning: '%.%' is deprecated.
+## Use '%&gt;%' instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
+<pre><code>## Warning: '%.%' is deprecated.
+## Use '%&gt;%' instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
+<pre><code>## Warning: '%.%' is deprecated.
+## Use '%&gt;%' instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
+<pre><code>## Warning: '%.%' is deprecated.
+## Use '%&gt;%' instead.
+## See help(&quot;Deprecated&quot;)</code></pre>
 <pre><code>## Source: local data frame [5 x 2]
 ## 
 ##    playerID total

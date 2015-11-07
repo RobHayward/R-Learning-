@@ -1,0 +1,78 @@
+---
+title: "DataFrame"
+author: "Rob Hayward"
+date: "7 November 2015"
+output: 
+  html_document: 
+    theme: cosmo
+---
+
+From [Lionel Hertzog](http://datascienceplus.com/working-with-data-frame-in-r/)
+
+##Transpose
+```{r}
+data(cars)
+head(mtcars)
+mtcarst <- t(mtcars)
+# cut some columns to print nicely
+head(mtcarst[,1:4])
+```
+##Merge
+```{r}
+data(cars)
+df <- data.frame(Color = c(rep("red", 5), rep("grey", 10), rep("white", 10), 
+                           rep("black", 5), rep("chrome", 2)))
+df$Model <- rownames(mtcars)
+mtcars$Model <- rownames(mtcars)
+df_merge <- merge(mtcars, df)
+# cut some columns to print nicely.
+head(df_merge[,c(1, 2, 3, 4, 5, 6, 7, 11, 12, 13)])
+```
+Merge works here beause the first row names are the same. Otherwise, you would have to specify the column that is to be used for the merging. `by.x` gives the name of the column of the first dataframe to use and `by.y` is the name of the column of the second dataframe to use.  If there are more rows in the second dataframe, it is necessary to make `all.y` TRUE so that rows that do not git with the first dataframe are added and filled with NAs. In the following example `all.x` are not necessary. 
+
+````{r}
+colnames(df)[2] <- "Models"
+df[33,] <- c("grey", "Citron")
+df_merged <- merge(mtcars, df, by.x = "Model", by.y = "Models", all.x = TRUE,
+                   all.y = TRUE)
+df_merged[df_merged$Model == "Citron", ]
+```
+##Sorting
+To sort (ascending) on the number of gears, 
+
+```{r}
+df_ordered <- df_merged[order(df_merged$gear), ]
+df_merged$gear
+df_ordered$gear
+```
+The function `ordered` returns a vector of indices that will order the dataframe. This can also be used with strings to order alphabetically. 
+
+##Change column order
+```{r}
+df_merged <- df_merged[, c(1, 13, 2:12)]
+head(df_merged[ ,1:10])
+```
+###Delete a column
+```{r}
+df_merged$Color <- NULL
+head(df_merged[, c(1, 5:11)])
+```
+##Subsetting or indexing
+Can use square braket or `subset` function
+```{r}
+new <- df_merged[df_merged$gear >= 4, ]
+new2 <- subset(df_merged, gear >= 4)
+new$gear
+new2$gear
+```
+Can also use the function `%in%` to get the intersection between a vector and a data.frame. 
+```{r}
+n <- 8
+new <- df_merged[df_merged$cyl %in% n, ]
+head(new)
+```
+There may be multiple arguments used to extract components of the dataframe
+```{r}
+new <- subset(df_merged, gear == 4 & cyl != 8)
+head(new)
+```

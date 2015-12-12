@@ -1,0 +1,53 @@
+---
+title: "R-Studio Webinars"
+author: "Rob Hayward"
+date: "4 December 2015"
+output: 
+  html_document: 
+    highlight: textmate
+    self_contained: no
+    theme: cosmo
+---
+
+# Writing code
+[Writing code](https://www.rstudio.com/resources/webinars/)
+There is a discussion of sourcing around 17.30 to 19.00.  To comment out a whole section of code (control-shift C)
+
+Alt-shift enter is a short-cut for source.
+
+Shortcuts
+
+* Alt - is `<-`
+* Control Shift M is `%>%`
+* Control Shift C is Comment out
+* Control Shift / will reflow the comment
+* `Fun` will create the basics of a function
+* If there is some code that works well, the lines of code can be turning into a fucntion, use R-studio (code extract function) to turn it into a function. 
+* Multiple cursors: Control Alt up or down
+
+# Debugging code
+[Debugging code](https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-2/)
+
+Useful commands
+
+* `debug()`
+* `undebug()`
+* `browser()`
+* `traceback()`
+* `options(error = browser)`
+* `options(error = NULL)`
+* `debugonce()`
+
+Call `debugonce("name of function")`.  The next time the function is run, the dubugger function is run. Opens the debugger mode.  Stops the execution and highlights the code where stopped. You can look up variables or change variables. `next` will run one line at a time. `step into` will step into an auxilliary function to look at its effect on the main function. 
+
+`browser()` command, with the function inside, will open the debugger whenever the fuction is run. This has to be removed from the code otherwise it will open the debugger each time it is run in the future. 
+
+As an alternative to this, put a `break point` by clicking in the margin.  You will get a red dot. This acts just like a browser statement.  This is easy to turn off and on. 
+
+For errors, R-studio may provide a `call traceback`. This will tell you which function caused the error. R-studio can also provide an option to `rerun with debug`. This will help you find the spot and fix the error. It may be something like a factor input instead of a string. 
+
+These can also be used with R-markdown and Shiny. 
+
+It is best to put a `browswer()` statement in the markdown.  The `break points` will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny. 
+
+

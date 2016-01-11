@@ -5,8 +5,10 @@ date: "4 December 2015"
 output: 
   html_document: 
     highlight: textmate
+    number_sections: yes
     self_contained: no
     theme: cosmo
+    toc: yes
 ---
 
 # Writing code
@@ -15,14 +17,14 @@ There is a discussion of sourcing around 17.30 to 19.00.  To comment out a whole
 
 Alt-shift enter is a short-cut for source.
 
-Shortcuts
+Short cuts
 
 * Alt - is `<-`
 * Control Shift M is `%>%`
 * Control Shift C is Comment out
-* Control Shift / will reflow the comment
+* Control Shift / will re-flow the comment
 * `Fun` will create the basics of a function
-* If there is some code that works well, the lines of code can be turning into a fucntion, use R-studio (code extract function) to turn it into a function. 
+* If there is some code that works well, the lines of code can be turning into a function, use R-studio (code extract function) to turn it into a function. 
 * Multiple cursors: Control Alt up or down
 
 # Debugging code
@@ -38,9 +40,9 @@ Useful commands
 * `options(error = NULL)`
 * `debugonce()`
 
-Call `debugonce("name of function")`.  The next time the function is run, the dubugger function is run. Opens the debugger mode.  Stops the execution and highlights the code where stopped. You can look up variables or change variables. `next` will run one line at a time. `step into` will step into an auxilliary function to look at its effect on the main function. 
+Call `debugonce("name of function")`.  The next time the function is run, the debugger function is run. Opens the debugger mode.  Stops the execution and highlights the code where stopped. You can look up variables or change variables. `next` will run one line at a time. `step into` will step into an auxiliary function to look at its effect on the main function. 
 
-`browser()` command, with the function inside, will open the debugger whenever the fuction is run. This has to be removed from the code otherwise it will open the debugger each time it is run in the future. 
+`browser()` command, with the function inside, will open the debugger whenever the function is run. This has to be removed from the code otherwise it will open the debugger each time it is run in the future. 
 
 As an alternative to this, put a `break point` by clicking in the margin.  You will get a red dot. This acts just like a browser statement.  This is easy to turn off and on. 
 
@@ -50,4 +52,61 @@ These can also be used with R-markdown and Shiny.
 
 It is best to put a `browswer()` statement in the markdown.  The `break points` will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny. 
 
+# Package writing
+[Link to webinar](https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-3/)
+Now that the code works, find out how to put the code into a package. 
 
+A package is just a collection of datasets and functions. It is just an agree file structure. Hadley Wickham has written a book, [R packages](http://r-pkgs.had.co.nz)
+
+It is important to put the files into the correct structure so that the system knows where to find the components. Start with `new project`.  Add the R files one at a time to the package.  The structure will be created. The codes will be in the R folder. 
+
+The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports. 
+
+It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard short-cuts
+
+* Load all `control shift L`
+* Document `control shift D`
+* Test `control shift T`
+* Check `control shift E`
+* Build and reload `control shift B`
+* Roxygen skeleton `control alt shift R`
+
+## Help pages
+These go in `man`
+
+This will go in a specific Rd file.  It is best to link the functions and the help pages.  The `Roxygen` package can be implemented from the options. Use the package. The Roxygen skeleton is placed in front of each function. This will be used to create the documentation. `@param` will describe the parameters. `@return` speaks of the return variables.  `@export' are the functions that you want to user to be able to use. 
+
+This cna be created from the build command.
+
+## Add data
+
+The data is saved as a `.RData` file.  This can be documented in a R file. 
+
+## Tests
+
+It is also possible to load some tests to check that the functions work the way that they are supposed to work.  These tests can be used whenever there is a change. Need to think more about the tests. This is something that Mango are keen on. 
+
+There is a `check` option that R-studio will run. This will include warnings and errors. There are also possible problems in Notes. These can be ignored. 
+
+## Distribute package
+
+This can be downloaded from Github. The package can be built as a tar. 
+
+There is a package development cheat sheet. There is an overview of package vignettes in the R-markdown documentation. 
+
+Packages need to be checked when there is a new version or R.  In most cases, it should work but occasionally it will break. 
+
+#Projects in R-studio
+[Projects Part 1]()
+
+## Efficiency in projects
+Working directory can be access with `getwd()`.  This can be useful for knowing relative paths. R will assume that the file path is the working directory. 
+
+A whole project will be saved in a directory that is a project. 
+
+Creating an R-package project will provide the template for all the key components.  The project system will also work with version control and packrat. With the pro account, it is also possible to share projects.  
+
+[Cheatsheet](www.rstudio.com/resources/cheatsheets/)
+
+
+When using R-markdown, the working directory is the folder where the R-markdown is located.  The working directory can be changed using the `setwd()`.  

@@ -68,24 +68,39 @@ img {
 <h4 class="date"><em>4 December 2015</em></h4>
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#writing-code"><span class="toc-section-number">1</span> Writing code</a></li>
+<li><a href="#debugging-code"><span class="toc-section-number">2</span> Debugging code</a></li>
+<li><a href="#package-writing"><span class="toc-section-number">3</span> Package writing</a><ul>
+<li><a href="#help-pages"><span class="toc-section-number">3.1</span> Help pages</a></li>
+<li><a href="#add-data"><span class="toc-section-number">3.2</span> Add data</a></li>
+<li><a href="#tests"><span class="toc-section-number">3.3</span> Tests</a></li>
+<li><a href="#distribute-package"><span class="toc-section-number">3.4</span> Distribute package</a></li>
+</ul></li>
+<li><a href="#projects-in-r-studio"><span class="toc-section-number">4</span> Projects in R-studio</a><ul>
+<li><a href="#efficiency-in-projects"><span class="toc-section-number">4.1</span> Efficiency in projects</a></li>
+</ul></li>
+</ul>
+</div>
 
 <div id="writing-code" class="section level1">
-<h1>Writing code</h1>
+<h1><span class="header-section-number">1</span> Writing code</h1>
 <p><a href="https://www.rstudio.com/resources/webinars/">Writing code</a> There is a discussion of sourcing around 17.30 to 19.00. To comment out a whole section of code (control-shift C)</p>
 <p>Alt-shift enter is a short-cut for source.</p>
-<p>Shortcuts</p>
+<p>Short cuts</p>
 <ul>
 <li>Alt - is <code>&lt;-</code></li>
 <li>Control Shift M is <code>%&gt;%</code></li>
 <li>Control Shift C is Comment out</li>
-<li>Control Shift / will reflow the comment</li>
+<li>Control Shift / will re-flow the comment</li>
 <li><code>Fun</code> will create the basics of a function</li>
-<li>If there is some code that works well, the lines of code can be turning into a fucntion, use R-studio (code extract function) to turn it into a function.</li>
+<li>If there is some code that works well, the lines of code can be turning into a function, use R-studio (code extract function) to turn it into a function.</li>
 <li>Multiple cursors: Control Alt up or down</li>
 </ul>
 </div>
 <div id="debugging-code" class="section level1">
-<h1>Debugging code</h1>
+<h1><span class="header-section-number">2</span> Debugging code</h1>
 <p><a href="https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-2/">Debugging code</a></p>
 <p>Useful commands</p>
 <ul>
@@ -97,12 +112,60 @@ img {
 <li><code>options(error = NULL)</code></li>
 <li><code>debugonce()</code></li>
 </ul>
-<p>Call <code>debugonce(&quot;name of function&quot;)</code>. The next time the function is run, the dubugger function is run. Opens the debugger mode. Stops the execution and highlights the code where stopped. You can look up variables or change variables. <code>next</code> will run one line at a time. <code>step into</code> will step into an auxilliary function to look at its effect on the main function.</p>
-<p><code>browser()</code> command, with the function inside, will open the debugger whenever the fuction is run. This has to be removed from the code otherwise it will open the debugger each time it is run in the future.</p>
+<p>Call <code>debugonce(&quot;name of function&quot;)</code>. The next time the function is run, the debugger function is run. Opens the debugger mode. Stops the execution and highlights the code where stopped. You can look up variables or change variables. <code>next</code> will run one line at a time. <code>step into</code> will step into an auxiliary function to look at its effect on the main function.</p>
+<p><code>browser()</code> command, with the function inside, will open the debugger whenever the function is run. This has to be removed from the code otherwise it will open the debugger each time it is run in the future.</p>
 <p>As an alternative to this, put a <code>break point</code> by clicking in the margin. You will get a red dot. This acts just like a browser statement. This is easy to turn off and on.</p>
 <p>For errors, R-studio may provide a <code>call traceback</code>. This will tell you which function caused the error. R-studio can also provide an option to <code>rerun with debug</code>. This will help you find the spot and fix the error. It may be something like a factor input instead of a string.</p>
 <p>These can also be used with R-markdown and Shiny.</p>
 <p>It is best to put a <code>browswer()</code> statement in the markdown. The <code>break points</code> will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny.</p>
+</div>
+<div id="package-writing" class="section level1">
+<h1><span class="header-section-number">3</span> Package writing</h1>
+<p><a href="https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-3/">Link to webinar</a> Now that the code works, find out how to put the code into a package.</p>
+<p>A package is just a collection of datasets and functions. It is just an agree file structure. Hadley Wickham has written a book, <a href="http://r-pkgs.had.co.nz">R packages</a></p>
+<p>It is important to put the files into the correct structure so that the system knows where to find the components. Start with <code>new project</code>. Add the R files one at a time to the package. The structure will be created. The codes will be in the R folder.</p>
+<p>The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports.</p>
+<p>It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard short-cuts</p>
+<ul>
+<li>Load all <code>control shift L</code></li>
+<li>Document <code>control shift D</code></li>
+<li>Test <code>control shift T</code></li>
+<li>Check <code>control shift E</code></li>
+<li>Build and reload <code>control shift B</code></li>
+<li>Roxygen skeleton <code>control alt shift R</code></li>
+</ul>
+<div id="help-pages" class="section level2">
+<h2><span class="header-section-number">3.1</span> Help pages</h2>
+<p>These go in <code>man</code></p>
+<p>This will go in a specific Rd file. It is best to link the functions and the help pages. The <code>Roxygen</code> package can be implemented from the options. Use the package. The Roxygen skeleton is placed in front of each function. This will be used to create the documentation. <code>@param</code> will describe the parameters. <code>@return</code> speaks of the return variables. `<span class="citation">@export</span>’ are the functions that you want to user to be able to use.</p>
+<p>This cna be created from the build command.</p>
+</div>
+<div id="add-data" class="section level2">
+<h2><span class="header-section-number">3.2</span> Add data</h2>
+<p>The data is saved as a <code>.RData</code> file. This can be documented in a R file.</p>
+</div>
+<div id="tests" class="section level2">
+<h2><span class="header-section-number">3.3</span> Tests</h2>
+<p>It is also possible to load some tests to check that the functions work the way that they are supposed to work. These tests can be used whenever there is a change. Need to think more about the tests. This is something that Mango are keen on.</p>
+<p>There is a <code>check</code> option that R-studio will run. This will include warnings and errors. There are also possible problems in Notes. These can be ignored.</p>
+</div>
+<div id="distribute-package" class="section level2">
+<h2><span class="header-section-number">3.4</span> Distribute package</h2>
+<p>This can be downloaded from Github. The package can be built as a tar.</p>
+<p>There is a package development cheat sheet. There is an overview of package vignettes in the R-markdown documentation.</p>
+<p>Packages need to be checked when there is a new version or R. In most cases, it should work but occasionally it will break.</p>
+</div>
+</div>
+<div id="projects-in-r-studio" class="section level1">
+<h1><span class="header-section-number">4</span> Projects in R-studio</h1>
+<p><a href="">Projects Part 1</a></p>
+<div id="efficiency-in-projects" class="section level2">
+<h2><span class="header-section-number">4.1</span> Efficiency in projects</h2>
+<p>Working directory can be access with <code>getwd()</code>. This can be useful for knowing relative paths. R will assume that the file path is the working directory.</p>
+<p>A whole project will be saved in a directory that is a project.</p>
+<p>Creating an R-package project will provide the template for all the key components. The project system will also work with version control and packrat. With the pro account, it is also possible to share projects.</p>
+<p><a href="www.rstudio.com/resources/cheatsheets/">Cheatsheet</a></p>
+</div>
 </div>
 
 

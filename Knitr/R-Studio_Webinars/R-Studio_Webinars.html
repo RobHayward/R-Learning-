@@ -120,18 +120,28 @@ img {
 <p>It is best to put a <code>browswer()</code> statement in the markdown. The <code>break points</code> will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny.</p>
 </div>
 <div id="package-writing" class="section level1">
+<<<<<<< HEAD
 <h1><span class="header-section-number">3</span> Package writing</h1>
 <p><a href="https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-3/">Link to webinar</a> Now that the code works, find out how to put the code into a package.</p>
 <p>A package is just a collection of datasets and functions. It is just an agree file structure. Hadley Wickham has written a book, <a href="http://r-pkgs.had.co.nz">R packages</a></p>
 <p>It is important to put the files into the correct structure so that the system knows where to find the components. Start with <code>new project</code>. Add the R files one at a time to the package. The structure will be created. The codes will be in the R folder.</p>
 <p>The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports.</p>
 <p>It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard short-cuts</p>
+=======
+<h1>Package writing</h1>
+<p>Now that the code works, find out how to put the code into a package.</p>
+<p>A package is just a collection of datasets and functions. It is just an agree file struture. Hadley Wickham has written a book, <a href="http://r-pkgs.had.co.nz">R packages</a></p>
+<p>It is important to put the files into the correct structure so that the system knows where to find the components. Start with <code>new project</code>. Add the R files one at a time to the package. The structure will be created. The codes will be in the R folder.</p>
+<p>The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports.</p>
+<p>It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard shortcuts</p>
+>>>>>>> c4779901bea4478d1ee3a4d3cfef1dde241d9949
 <ul>
 <li>Load all <code>control shift L</code></li>
 <li>Document <code>control shift D</code></li>
 <li>Test <code>control shift T</code></li>
 <li>Check <code>control shift E</code></li>
 <li>Build and reload <code>control shift B</code></li>
+<<<<<<< HEAD
 <li>Roxygen skeleton <code>control alt shift R</code></li>
 </ul>
 <div id="help-pages" class="section level2">
@@ -146,16 +156,37 @@ img {
 </div>
 <div id="tests" class="section level2">
 <h2><span class="header-section-number">3.3</span> Tests</h2>
+=======
+<li>Roxygen skelaton <code>control alt shift R</code></li>
+</ul>
+<div id="help-pages" class="section level2">
+<h2>Help pages</h2>
+<p>These go in <code>man</code></p>
+<p>This will go in a specific Rd file. It is best to link the functions and the help pages. The <code>Roxygen</code> package can be implemented from the options. Use the package. The Roxygen skelaton is placed infront of each function. This will be used to create the documentation. <code>@param</code> will describe the parameters. <code>@return</code> speaks of the return variables. `<span class="citation">@export</span>’ are the functions that you want to user to be able to use.</p>
+<p>This cna be creaed from the build commmand.</p>
+</div>
+<div id="add-data" class="section level2">
+<h2>Add data</h2>
+<p>The data is saved as a <code>.RData</code> file. This can be documented in a R file.</p>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+>>>>>>> c4779901bea4478d1ee3a4d3cfef1dde241d9949
 <p>It is also possible to load some tests to check that the functions work the way that they are supposed to work. These tests can be used whenever there is a change. Need to think more about the tests. This is something that Mango are keen on.</p>
 <p>There is a <code>check</code> option that R-studio will run. This will include warnings and errors. There are also possible problems in Notes. These can be ignored.</p>
 </div>
 <div id="distribute-package" class="section level2">
+<<<<<<< HEAD
 <h2><span class="header-section-number">3.4</span> Distribute package</h2>
+=======
+<h2>Distribute package</h2>
+>>>>>>> c4779901bea4478d1ee3a4d3cfef1dde241d9949
 <p>This can be downloaded from Github. The package can be built as a tar.</p>
 <p>There is a package development cheat sheet. There is an overview of package vignettes in the R-markdown documentation.</p>
 <p>Packages need to be checked when there is a new version or R. In most cases, it should work but occasionally it will break.</p>
 </div>
 </div>
+<<<<<<< HEAD
 <div id="projects-in-r-studio" class="section level1">
 <h1><span class="header-section-number">4</span> Projects in R-studio</h1>
 <p><a href="">Projects Part 1</a></p>
@@ -167,6 +198,8 @@ img {
 <p><a href="www.rstudio.com/resources/cheatsheets/">Cheatsheet</a></p>
 </div>
 </div>
+=======
+>>>>>>> c4779901bea4478d1ee3a4d3cfef1dde241d9949
 
 
 </div>

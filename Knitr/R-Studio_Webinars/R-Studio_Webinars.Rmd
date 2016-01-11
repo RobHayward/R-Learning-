@@ -53,6 +53,7 @@ These can also be used with R-markdown and Shiny.
 It is best to put a `browswer()` statement in the markdown.  The `break points` will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny. 
 
 # Package writing
+<<<<<<< HEAD
 [Link to webinar](https://www.rstudio.com/resources/webinars/rstudio-essentials-webinar-series-programming-part-3/)
 Now that the code works, find out how to put the code into a package. 
 
@@ -62,7 +63,8 @@ It is important to put the files into the correct structure so that the system k
 
 The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports. 
 
-It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard short-cuts
+It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard shortcuts
+>>>>>>> c4779901bea4478d1ee3a4d3cfef1dde241d9949
 
 * Load all `control shift L`
 * Document `control shift D`

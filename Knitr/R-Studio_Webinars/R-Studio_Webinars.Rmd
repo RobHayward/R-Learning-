@@ -50,4 +50,45 @@ These can also be used with R-markdown and Shiny.
 
 It is best to put a `browswer()` statement in the markdown.  The `break points` will not yet work. However, that may change. Markdown is operating as if there is another R session in the background (so that workspace variables are not run). Breakpoints can be run in Shiny. 
 
+# Package writing
+Now that the code works, find out how to put the code into a package. 
 
+A package is just a collection of datasets and functions. It is just an agree file struture. Hadley Wickham has written a book, [R packages](http://r-pkgs.had.co.nz)
+
+It is important to put the files into the correct structure so that the system knows where to find the components. Start with `new project`.  Add the R files one at a time to the package.  The structure will be created. The codes will be in the R folder. 
+
+The description file tells us what the package does. R-studio creates template. Packages that are required should be listed under imports. 
+
+It is important to load the package so that you are sure that the current version is what you are testing. There are a number of keyboard shortcuts
+
+* Load all `control shift L`
+* Document `control shift D`
+* Test `control shift T`
+* Check `control shift E`
+* Build and reload `control shift B`
+* Roxygen skelaton `control alt shift R`
+
+## Help pages
+These go in `man`
+
+This will go in a specific Rd file.  It is best to link the functions and the help pages.  The `Roxygen` package can be implemented from the options. Use the package. The Roxygen skelaton is placed infront of each function. This will be used to create the documentation. `@param` will describe the parameters. `@return` speaks of the return variables.  `@export' are the functions that you want to user to be able to use. 
+
+This cna be creaed from the build commmand.
+
+## Add data
+
+The data is saved as a `.RData` file.  This can be documented in a R file. 
+
+## Tests
+
+It is also possible to load some tests to check that the functions work the way that they are supposed to work.  These tests can be used whenever there is a change. Need to think more about the tests. This is something that Mango are keen on. 
+
+There is a `check` option that R-studio will run. This will include warnings and errors. There are also possible problems in Notes. These can be ignored. 
+
+## Distribute package
+
+This can be downloaded from Github. The package can be built as a tar. 
+
+There is a package development cheat sheet. There is an overview of package vignettes in the R-markdown documentation. 
+
+Packages need to be checked when there is a new version or R.  In most cases, it should work but occasionally it will break. 

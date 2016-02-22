@@ -112,3 +112,5 @@ Creating an R-package project will provide the template for all the key componen
 
 
 When using R-markdown, the working directory is the folder where the R-markdown is located.  The working directory can be changed using the `setwd()`.  
+
+#Version control 

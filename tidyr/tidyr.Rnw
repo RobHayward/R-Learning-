@@ -1,0 +1,65 @@
+\documentclass[12pt, a4paper, oneside]{hitec} % Paper size, default font size and one-sided paper
+%\graphicspath{{./Figures/}} % Specifies the directory where pictures are stored
+%\usepackage[dcucite]{harvard}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage[flushleft]{threeparttable}
+\usepackage{multirow}
+\usepackage[comma, sort&compress]{natbib}% Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers' 
+\usepackage{graphicx}
+%\bibliographystyle{plainnat}
+\bibliographystyle{agsm}
+\usepackage[colorlinks = true, citecolor = blue, linkcolor = blue]{hyperref}
+%\hypersetup{urlcolor=blue, colorlinks=true} % Colors hyperlinks in blue - change to black if annoying
+%\renewcommand[\harvardurl]{URL: \url}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{mygrey}{gray}{0.95}
+\lstset{backgroundcolor=\color{mygrey}}
+\begin{document}
+\title{tidyr}
+\author{Rob Hayward}
+\date{\today}
+\maketitle
+\subsection*{Introduction}
+\href{http://blog.rstudio.org/2016/02/02/tidyr-0-4-0/}{tidyr 0.4.0}.  There is \href{http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html}{Vignette here.}  There are two main developments: 
+\begin{itemize}
+\item nested dataframes
+\item turning implicit missing varibles into explicit varibles
+\end{itemize}
+
+All tidy verbs now handle \lstinline{grouped_df}; \lstinline{gather} makes a character key column.  
+
+\subsection*{nest}
+\lstinline{nest()} and \lstinline{unnest()} will restructure the data. In a grouped dataframe, there is one row per osbservation; in a nested dataframe, there is one row per group and the individual observations are stored in a column that is a list of dataframes. 
+
+<<gapdata, warning=FALSE, message=FALSE>>=
+library(tidyr)
+library(dplyr)
+da <- read.csv("../Data/gapminder.csv", stringsAsFactors = FALSE)
+by_country <- da %>%  
+  group_by(continent, country) %>% 
+  nest()
+by_country
+@
+
+and there is a reference to another data frame in the \lstinline{data} column.  This is accessed by
+
+<<nesteddata, warning=FALSE,message=FALSE>>=
+by_country$data[[1]]
+@
+
+It is also possible to take a linear model of each of these countries and add it as another column to the data frame.  The following code will use \lstinline{mutate} and \lstinline{purrr}. The latter is discussed \href{http://r4ds.had.co.nz/lists.html}{here.}
+
+<<lm, message=FALSE, warning=FALSE>>=
+library(purrr)
+by_country <- by_country %>% 
+  mutate(model = purrr::map(data ~ lm(lifeExp ~ year, data = .)))
+by_country
+@
+Not sure why this does not work. Error says that argument .f is missign.  I think this may be the data = .
+
+
+\end{document}

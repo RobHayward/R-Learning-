@@ -1,0 +1,99 @@
+---
+title: "BaseR"
+author: "Rob Hayward"
+date: "10 June 2018"
+output: html_document
+---
+##Base R
+This is a test of the series called *Base R* that begins [here](https://jozefhajnala.gitlab.io/r/r001-reshape/)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r base1}
+gdi <- read.csv(
+  stringsAsFactors = FALSE, 
+  url("https://jozefhajnala.gitlab.io/r/post/data/ESA2010_GDI.csv")
+)
+head(gdi[, 1:7])
+```
+To re-shape from wide to long, 
+```{r reshape}
+gdi_long <- reshape(data = gdi, 
+                    direction = 'long',
+                    varying = 2:23) # columns that will be stacked into 1
+head(gdi_long)
+```
+The way that the data is presented can be improved. 
+```{r reshape2}
+gdi_long_full <- reshape(data = gdi, 
+                         direction = "long", 
+                         varying = 2:23, 
+                         idvar = "country", #what identifies the rows
+                         v.names = "GDI", # what are the columns called
+                         timevar = "year", # what is the time column called
+                         times = 1995:2016 # values for timevar
+                         )
+head(gdi_long_full)
+```
+It is also possible to go the other way, 
+```{r, wide}
+gdi_wide <- reshape(data = gdi_long_full, 
+                    direction = "wide", 
+                    idvar = "country", 
+                    timevar = "year", 
+                    v.names = "GDI" 
+                    )
+head(gdi_wide[, 1:7], drop = FALSE)
+```
+###Advanced Re-shape
+This is a more challenging example
+```{r challenge}
+more_not_pretty <- read.csv(
+  stringsAsFactors = FALSE,
+  file = "https://jozefhajnala.gitlab.io/r/post/data/ESA2010_not_pretty.csv"
+)
+head(more_not_pretty[,1:5], drop = FALSE)
+```
+Now the variables do not have easily recognisable names.  They have to be specified as a list of vectors with each element specificying the columns for one varying vector with ``v.names`` for each of the variables. 
+```{r not_pretty}
+more_not_pretty_long <- reshape(
+  data = more_not_pretty,
+  direction = "long", 
+  varying = list(2:23,
+                 24:45,
+                 46:67),
+  timevar = "year",
+  times = 1995:2016,
+  idvar = "country",
+  v.names = c("ConspC",
+              "AGDIpC",
+              "GrossSaving"
+              )
+)
+head(more_not_pretty_long)
+```
+Alternatively, 
+
+```{r not_pretty_two}
+more_pretty <- read.csv(
+  stringsAsFactors = FALSE,
+  file = "https://jozefhajnala.gitlab.io/r/post/data/ESA2010_not_pretty.csv")
+head(more_pretty[, 1:5, drop = FALSE])
+```
+
+```{r not_pretty_three}
+more_pretty_long <- reshape(data = more_pretty, 
+                           direction = "long", 
+                           varying = 2:67,
+                           idvar = "country"
+                           )
+head(more_pretty_long)
+```
+
+
+
+
+
+

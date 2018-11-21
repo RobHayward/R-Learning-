@@ -1,3 +1,4 @@
+*.todo
 .Rproj.user
 .Rhistory
 .RData

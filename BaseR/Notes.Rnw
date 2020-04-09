@@ -1,0 +1,29 @@
+---
+title: "BaseR"
+author: "Rob Hayward"
+date: "10 June 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r base1}
+gdi <- read.csv(
+  stringasAsFactors = FALSE, 
+  url("https://jozefhajnala.gitlab.io/r/post/data/ESA2010_GDI.csv")
+)
+head(gdi[, 1:7])
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

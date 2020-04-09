@@ -93,6 +93,8 @@ head(more_pretty_long)
 ```
 
 
+### Nairve Bayes
+
 
 
 

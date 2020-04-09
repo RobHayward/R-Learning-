@@ -1,0 +1,14 @@
+Section 1
+There are examples in the directory
+
+Section 2
+Model problems 
+- bias.  most models aim to be unbiased. Sometimes this will depend on the model assumptions (such as linear relatioinship)
+- variance.  There may be a lot of variance in the preictions.  This variance can sometimes be reduced by introducing some bias. 
+- Over-fitting.  High bias can lead to over-fitting. This is modelling the sample rather than the underlying structure. The model may be too complex.  Performing well in training and poorly in operation means that it is overfit. 
+
+The model should be tested on training and testing data.  The model will do better on the training data. This is the training error.  This can be related to the test error.  The difference between the two is the generalisation errror. This identifies how well this model will work in the field. Many practitioners suggest that the data should be split three ways:  training, calibration and test. Where data is scarce, it is possible to use cross-validation and resampling techniques. It is best to split randomly.  However, this is not always possible (time serries and where a lot of data comes from one person). 
+
+http://www.win-vector.com/blog/2015/01/random-testtrain-split-is-not-always-enough/
+
+Linear regression is less complex than a random forest algorithm.  However, that may mean that there is overfitting.  Test the data on the holdout or test data to see if the root-mean-square error is similar in training and test data. 

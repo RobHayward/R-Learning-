@@ -204,7 +204,24 @@ summary {
 <p>These adjustments are designed to prevent zeros and log problems.</p>
 <p>We will assess the probability that the document was written by Shakespeare and the probability that it was not written by Shakespeare. If one probability is above the other, this is our evidence.</p>
 <p><a href="http://www.win-vector.com/blog/2015/01/random-testtrain-split-is-not-always-enough/" class="uri">http://www.win-vector.com/blog/2015/01/random-testtrain-split-is-not-always-enough/</a></p>
+<p>The exampe is given in the <em>NaiveBayes</em> directory. This will walk through a test of Shapshere vs Marlow. The Naive Bayes is good for binary and multicalss classification. It is a supervised classification technique. For example, fradulent transactions may already have been identified and we would like a model to identify poptentially fradulent activities. Based on temperature, wind, humidity, it may be possible to predict the weather tomorrow. Based on patient attributes it may be possible to assess whether a treatment will be successful or not.</p>
+<p>Could I use this to assess whether particlar words in the Bank of England Bulletin can determine whether there is going to be a rate cut in the next 12 months? Combine this with the web scraping to get the Bulletins and then check whether there has been a rate change in the next 12 months.</p>
+<p>There is additional information <a href="https://towardsdatascience.com/all-about-naive-bayes-8e13cef044cf">here</a></p>
+</div>
+<div id="linear-regression" class="section level2">
+<h2>Linear Regression</h2>
 <p>Linear regression is less complex than a random forest algorithm. However, that may mean that there is over fitting. Test the data on the holdout or test data to see if the root-mean-square error is similar in training and test data.</p>
+</div>
+<div id="logisitic-regression" class="section level2">
+<h2>Logisitic Regression</h2>
+</div>
+<div id="decision-tree-clasifier" class="section level2">
+<h2>Decision-tree clasifier</h2>
+<p>Decision-tree predictaion. This will be used for clasification. Iteratively selecting a variable. These are easy to understand and work well with categorical variables and with non-linearities. However, they tend to have wide variance. We saw that in the comparison with linear regression. They are sensitive to the distribution of teh data and inclined to overfit.</p>
+<p>One way to deal with high-variance modelling procedurres is to average across a number of models. This is called . Combine models created with different samples from the original training set (bootstrapping).</p>
+<p>Sometimes the explanatory variables are not very effective. One way to deal with this is to randomise the set of explanatory variables as well as the samples. Use a random set of variables drawn randomly from the whole set of variables. In that case each model is based on different sample and different variables. They will now be less correlated.</p>
+<p>Random forest is a  model. It is good at predictions but not understanding. Therefore it is a good choice when you are not sure of teh structure of the process that you are modeling, when you do not understand the interactions between the variables or when there are many variables.</p>
+<p>They tend to overfit. Therefore it is essential to test the model on hold-out data.</p>
 </div>
 
 

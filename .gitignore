@@ -9,3 +9,8 @@
 *pdf
 *jpeg
 *Rproj
+*.gz
+*.html
+*.ipynb
+*.rds
+*.png

@@ -35,6 +35,70 @@ We will assess the probability that the document was written by Shakespeare and 
 
 http://www.win-vector.com/blog/2015/01/random-testtrain-split-is-not-always-enough/
 
-The exampe is given in the *NaiveBayes* directory.
+The exampe is given in the *NaiveBayes* directory. This will walk through a test of Shapshere vs Marlow. The Naive Bayes is good for binary and multicalss classification. It is a supervised classification technique. For example, fradulent transactions may already have been identified and we would like a model to identify poptentially fradulent activities. Based on temperature, wind, humidity, it may be possible to predict the weather tomorrow. Based on patient attributes it may be possible to assess whether a treatment will be successful or not. 
 
+Could I use this to assess whether particlar words in the Bank of England Bulletin can determine whether there is going to be a rate cut in the next 12 months?   Combine this with the web scraping to get the Bulletins and then check whether there has been a rate change in the next 12 months.  
+
+There is additional information [here](https://towardsdatascience.com/all-about-naive-bayes-8e13cef044cf)
+
+## Linear Regression
 Linear regression is less complex than a random forest algorithm.  However, that may mean that there is over fitting.  Test the data on the holdout or test data to see if the root-mean-square error is similar in training and test data. 
+
+## Logisitic Regression
+
+## Decision-tree clasifier
+Decision-tree predictaion.  This will be used for clasification. Iteratively selecting a variable. These are easy to understand and work well with categorical variables and with non-linearities.  However, they tend to have wide variance.  We saw that in the comparison with linear regression.  They are sensitive to the distribution of teh data and inclined to overfit. 
+
+One way to deal with high-variance modelling procedurres is to average across a number of models. This is called \emph{bagging}. Combine models created with different samples from the original training set (bootstrapping). 
+
+Sometimes the explanatory variables are not very effective.  One way to deal with this is to randomise the set of explanatory variables as well as the samples. Use a random set of variables drawn randomly from the whole set of variables.  In that case each model is based on different sample and different variables. They will now be less correlated. 
+
+Random forest is a \emph{black box} model. It is good at predictions but not understanding. Therefore it is a good choice when you are not sure of teh structure of the process that you are modeling, when you do not understand the interactions between the variables or when there are many variables. 
+
+They tend to overfit. Therefore it is essential to test the model on hold-out data. 
+
+
+### GAM
+GAM corrects for non-linear relationships. 
+
+GAM models compare the residuals to the model variables to see if any reshaping of the variables can explain the residuals.``mgcv`` package will allow the use of generalised linear models. The use is ``gam`` and then the transformation that allows the residuals to be explained.  In this example, it is a sine. 
+
+To carry out the technique, it is necessary to build a list of spline variables.  These variables should not be categorical or ones with limited number of values. 
+
+Using the gam can replace the work of reshaping variables or introducing dummy variables. Gams can work for regression and classfication. However, gams cannot add multiple variable interactions. 
+
+### Support vector machine
+
+
+This is a technique which will add synthetic variables (including interactions) in an automated way.  This is a discriminative method.  There is no parameter given. K-nearest neighbours is an alteranative.  However, this needs a lot of data and time. SVM can be carried out with normal kernel or other kernels. 
+
+Linear svm will find separating or calssifying lines. SVM are as powerful as Rosenblatt's perceptron (dominating machine learning since the 1950s). It is optimal for linear methods. The solution is unique. It gets better with more training data. 
+
+Most data is not linearly separable. However, where y is noisy the technique is difficult. 
+
+The kernal trick is that kernels are like dot products. This can be used to find interactions. The kernel must be specified. With lots of dimenstions there is a large risk of over-fitting. Margin can help. S is a set of indices called *support vectors* that will determine the shape of the problem. 
+
+
+### Gradient Boosting
+
+This will generate complicated models by re-fitting sub-models (usually decision-trees) to residuals or pseudo-residuals. Can be used with classigication or regression.  It is an *ensemble* method. These are classifiers that classify by building a linear model over many other classifiers. Two main types: 
+
+* Bagging inspired classifiers that control generalised error through pertubation and averaging sub-models. 
+* Boosting inspired classifiers that interitively fit submodels. 
+
+Using more trees will gradually get closer and closer to the actual fit. This minimises a loss function that is based on the residuals. The method will test multiple sub-models and uses that model that most improves the current fit. 
+
+Gradient boosting has shrinkage and regularisation built in. This makes it more likely that a good training model will be a good test model. 
+
+* **Regularisation** is an optimisation control that trades quality of fit on training data against model simplicity/coefficient size. This tends to boot generalisation model. 
+
+* **Shrinkage** is a technique to improve the estimator by averaging with a simpler estimator. It is controlversial.   It is roughly the same as attempting to use different *priors* in Bayesian statistics. For gradient boosting the new model can be averaged with older versions of the model. 
+
+### Examples
+
+``gbm`` can be called in R through the ``gbm`` and the ``gmb.fit`` functions.  The latter is quicker.  There are also a number of options, including the ``shrinkage`` which tends to be too low. The software will suggest a number of trees. This is based on the improvements that take place in the application to other data.   The suggestion is at the point that improvement ends. 
+
+There are a standard set of reports that are more fully explained in the *evaluation models* section.  The double-density plot of true-positive and false-positive is the most important. 
+
+Gradient boosting is a complement to random forest. 
+
